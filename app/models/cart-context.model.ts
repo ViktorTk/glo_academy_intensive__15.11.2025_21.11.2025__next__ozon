@@ -5,5 +5,6 @@ export interface CartContextType {
   isOpen: boolean
   cartItems: CartItem[]
   setIsOpen: (value: boolean) => void
-  addToCart: (product: Product) => void
+  addCartItem: (product: Product) => void
+  deleteCartItem: (product: Product) => void
 }

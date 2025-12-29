@@ -21,7 +21,7 @@ export default function CartProvider({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [cartItems, setCartItems] = useState<CartItem[]>([])
 
-  const addToCart = (product: Product) => {
+  const addCartItem = (product: Product) => {
     setCartItems((prev) => {
       const findProduct = cartItems.find((p) => p.id === product.id)
 
@@ -32,13 +32,30 @@ export default function CartProvider({ children }: { children: ReactNode }) {
       } else {
         return [...prev, { ...product, count: 1 }]
       }
+    })
+  }
 
-      return prev
+  const deleteCartItem = (product: Product) => {
+    setCartItems((prev) => {
+      const findProduct = cartItems.find((p) => p.id === product.id)
+      if (findProduct) {
+        if (findProduct.count > 1) {
+          return prev.map((p) =>
+            p.id === findProduct.id ? { ...p, count: p.count - 1 } : p
+          )
+        } else {
+          return prev.filter((p) => p.id !== product.id)
+        }
+      } else {
+        return prev
+      }
     })
   }
 
   return (
-    <CartContext.Provider value={{ isOpen, cartItems, setIsOpen, addToCart }}>
+    <CartContext.Provider
+      value={{ isOpen, cartItems, setIsOpen, addCartItem, deleteCartItem }}
+    >
       {children}
     </CartContext.Provider>
   )
