@@ -22,7 +22,19 @@ export default function CartProvider({ children }: { children: ReactNode }) {
   const [cartItems, setCartItems] = useState<CartItem[]>([])
 
   const addToCart = (product: Product) => {
-    setCartItems([{ ...product, count: 1 }])
+    setCartItems((prev) => {
+      const findProduct = cartItems.find((p) => p.id === product.id)
+
+      if (findProduct) {
+        return prev.map((p) =>
+          p.id === findProduct.id ? { ...p, count: p.count + 1 } : p
+        )
+      } else {
+        return [...prev, { ...product, count: 1 }]
+      }
+
+      return prev
+    })
   }
 
   return (

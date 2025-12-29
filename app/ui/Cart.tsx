@@ -14,13 +14,33 @@ export default function Cart() {
         </div>
 
         <div className="cart-wrapper">
-          <pre>
-            {cartItems.map((item) => (
-              <span key={item.id}>{item.title}</span>
-            ))}
-          </pre>
+          {cartItems.map((product) => (
+            <div className="card" key={product.id}>
+              {product.sale ? (
+                <div className="card-sale">🔥Hot Sale🔥</div>
+              ) : (
+                ''
+              )}
+              <div className="card-img-wrapper">
+                <span
+                  className="card-img-top"
+                  style={{ backgroundImage: `url('${product.img}')` }}
+                ></span>
+              </div>
+              <div className="card-body justify-content-between">
+                <div className="card-price">
+                  {product.price} ₽ * {product.count} ={' '}
+                  {product.price * product.count}
+                </div>
+                <h5 className="card-title">{product.title}</h5>
+                <button className="btn btn-primary">Удалить</button>
+              </div>
+            </div>
+          ))}
 
-          <div id="cart-empty">Ваша корзина пока пуста</div>
+          {!cartItems.length ? (
+            <div id="cart-empty">Ваша корзина пока пуста</div>
+          ) : null}
         </div>
         <button className="btn btn-primary cart-confirm">Оформить заказ</button>
         <div className="cart-close" onClick={() => setIsOpen(false)}></div>
